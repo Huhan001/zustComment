@@ -1,0 +1,1 @@
+export const Max_Characters: number = 150;
