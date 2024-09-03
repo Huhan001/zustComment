@@ -1,24 +1,44 @@
 import {TriangleUpIcon} from "@radix-ui/react-icons";
+import { feedback} from '../constants/constant';
+import { TextStore } from "../store/TextStore";
+import { Spinning } from "../style/Spinning";
+import { useEffect } from "react";
+
 
 export const FeedbackList = () => {
-    return (
+
+    const response = TextStore(state => state.response);
+    const isLoading = TextStore(state => state.loading);
+    const FetchData = TextStore(state => state.FetchData)
+
+    useEffect(() => {FetchData()},[]) // I have deleted the empty array in the useEffect hook to avoid infinite loop of fetching data
+
+
+        return (
         <ol className='feedback-list'>
-            <li className='feedback'>
+            {isLoading  && <Spinning />}
+            {response.map((data) => (<Feedback  key={data.id} {...data} />))}
+        </ol>
+    )
+}
+
+const Feedback = ({upvoteCount, badgeLetter, company, text, daysAgo}:feedback) =>  {
+    return (
+        <li className='feedback'>
                 <button>
                     <TriangleUpIcon />
-                    <span>153</span>
+                    <span>{upvoteCount}</span>
                 </button>
                 <div>
-                    <p>H</p>
+                    <p>{badgeLetter}</p>
                 </div>
 
                 <div>
-                    <p>Hanson</p>
-                    <p>At GPT Lab, your privacy is our top priority.To protect your personal information, our system only uses the hashed value complete privacy and anonymity.sdsdsdsdsour privacy is our top priorit
-                    </p>
+                    <p>{company}</p>
+                    <p>{text}</p>
                 </div>
-                <p>4d</p>
+                <p>{daysAgo}d</p>
             </li>
-        </ol>
     )
+    
 }
