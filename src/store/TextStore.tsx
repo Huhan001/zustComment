@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import { Max_Characters } from "../constants/constant";
 import { feedback } from "../constants/constant";
 
 
@@ -13,6 +12,7 @@ interface textStore {
     errors: string | null;
     PostText: () => Promise<void>;
     AddUpvote: (id:number) => void;
+    hashtags: (word:string) => void;
 }
 
 export const TextStore = create<textStore>()((set, get) => {
@@ -21,7 +21,6 @@ export const TextStore = create<textStore>()((set, get) => {
         response:[],
         errors: null,
         loading:false,
-        hashtags: [],
         setText: (event: React.ChangeEvent<HTMLTextAreaElement>) => {
             // if(get().TextCount() > Max_Characters) return;
             set({text: event.target.value})
@@ -58,6 +57,10 @@ export const TextStore = create<textStore>()((set, get) => {
                 }
             })
         },
-        AddUpvote : async (id:number) => set((state) => ({response: state.response.map(data => data.id === id ? {...data, upvoteCount: data.upvoteCount + 1} : data)})),
+        AddUpvote : async (id:number) => {
+            set((state) => ({response: state.response.map(data => data.id === id ? {...data, upvoteCount: data.upvoteCount + 1} : data)}));   
+        },
+        hashtags: (word:string) =>  
+            set((state) => ({response: state.response.filter(data => data.text.split(/\s/).some(item => item === word) && data )}))
     }
 })

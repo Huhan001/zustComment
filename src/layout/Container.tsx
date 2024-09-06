@@ -1,5 +1,7 @@
-import {Header} from "./Header.tsx";
-import {FeedbackList} from "./FeedbackList.tsx";
+import { FeedbackList } from "../feedback/FeedbackList"
+import { Header } from "./Header"
+
+
 
 export const Container = () => {
     return (

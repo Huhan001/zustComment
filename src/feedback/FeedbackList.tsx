@@ -1,9 +1,9 @@
-import {TriangleUpIcon} from "@radix-ui/react-icons";
-import { feedback} from '../constants/constant';
-import { TextStore } from "../store/TextStore";
-import { Spinning } from "../style/Spinning";
 import { useEffect } from "react";
-import { ErrorMesage } from "./ErrorMesage";
+import { TextStore } from "../store/TextStore";
+import { ErrorMesage } from "../components/ErrorMesage";
+import { Spinning } from "../style/Spinning";
+import { feedback } from "../constants/constant";
+import { TriangleUpIcon } from "@radix-ui/react-icons";
 
 
 export const FeedbackList = () => {
