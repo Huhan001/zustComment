@@ -58,9 +58,20 @@ export const TextStore = create<textStore>()((set, get) => {
             })
         },
         AddUpvote : async (id:number) => {
-            set((state) => ({response: state.response.map(data => data.id === id ? {...data, upvoteCount: data.upvoteCount + 1} : data)}));   
+            set((state) => ({response: state.response.map(data => data.id === id ? {...data, upvoteCount: data.upvoteCount + 1} : data)}));
+            
+            const upvote = get().response.find(data => data.id === id)
+            await fetch(`https://bytegrad.com/course-assets/projects/corpcomment/api/feedbacks/` + id, {
+                method: 'PUT',
+                body: JSON.stringify(upvote),
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            })
+            console.log(upvote)
         },
         hashtags: (word:string) =>  
-            set((state) => ({response: state.response.filter(data => data.text.split(/\s/).some(item => item === word) && data )}))
+            set((state) => ({response: state.response.filter(data => data.company === word && data )}))
     }
 })

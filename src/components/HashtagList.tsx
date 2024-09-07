@@ -6,8 +6,12 @@ export const HashtagList = () => {
 
     return (
         <ul className='hashtags'>
-            {recordedTexts.map(data => data.text.split(/\s/).filter(word => word.includes('#')).map((word, index) => <li key={index}>
-                <button onClick={() => hashtag(word)}>{word}</button></li>))}
+            {
+                recordedTexts.map(data => data.company).filter((word, index, array) => array.indexOf(word) === index).
+                map((word, index) => <li key={index}>
+                <button onClick={() => hashtag(word)}>#{word}</button></li>)
+            }
+
         </ul>
     )
 }
