@@ -24,7 +24,7 @@ export const FeedbackForm = () => {
 
             <div>
                 <p className='u-italic'>{Max_Characters - count}</p>
-                <button onClick={PostText} disabled= {count > Max_Characters? true : false} >
+                <button onClick={PostText} disabled= {count > Max_Characters} >
                     <span>Submit</span>
                 </button>
             </div>

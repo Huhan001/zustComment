@@ -12,6 +12,7 @@ export const FeedbackList = () => {
     const isLoading = TextStore(state => state.loading);
     const FetchData = TextStore(state => state.FetchData)
     const errors = TextStore(state => state.errors)
+    const filteredResponse = TextStore(state => state.filteredResponse)
 
 
     // load up new feedback typed by the user
@@ -22,7 +23,7 @@ export const FeedbackList = () => {
         <ol className='feedback-list'>
             {errors && <ErrorMesage mesage={errors} />}
             {isLoading  && <Spinning />}
-            {response.map((data) => (<Feedback  key={data.id} {...data} />))}
+            {(filteredResponse ?? response).map((data) => (<Feedback  key={data.id} {...data} />))}
         </ol>
     )
 }

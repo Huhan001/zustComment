@@ -1,15 +1,26 @@
 import { TextStore } from "../store/TextStore";
+import {useEffect} from "react";
 
 export const HashtagList = () => {
-    const recordedTexts = TextStore(state => state.response);
-    const hashtag = TextStore(state => state.hashtags); 
+    const companyCollector= TextStore(state => state. companyCollector);
+    const CompanyListView = TextStore(state => state.CompanyListView);
+    const response = TextStore(state => state.response)
+    const hashtag = TextStore(state => state.hashtagFilter);
+
+
+//    useEffect is for data and API retrival while useMemo is for inside data calculation
+    useEffect(() => {
+        companyCollector()
+    },[response])
+
 
     return (
         <ul className='hashtags'>
             {
-                recordedTexts.map(data => data.company).filter((word, index, array) => array.indexOf(word) === index).
-                map((word, index) => <li key={index}>
-                <button onClick={() => hashtag(word)}>#{word}</button></li>)
+                CompanyListView.map((word, index) =>
+                    <li key={index}>
+                <button onClick={() => hashtag(word)}>#{word}</button>
+                    </li>)
             }
 
         </ul>

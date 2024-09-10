@@ -12,15 +12,20 @@ interface textStore {
     errors: string | null;
     PostText: () => Promise<void>;
     AddUpvote: (id:number) => void;
-    hashtags: (word:string) => void;
+    companyCollector: () => void;
+    CompanyListView: string[];
+    hashtagFilter: (word:string) => void;
+    filteredResponse: feedback[] | null
 }
 
 export const TextStore = create<textStore>()((set, get) => {
     return {
         text: '',
         response:[],
+        filteredResponse:null,
         errors: null,
         loading:false,
+        CompanyListView: [],
         setText: (event: React.ChangeEvent<HTMLTextAreaElement>) => {
             // if(get().TextCount() > Max_Characters) return;
             set({text: event.target.value})
@@ -57,21 +62,10 @@ export const TextStore = create<textStore>()((set, get) => {
                 }
             })
         },
-        AddUpvote : async (id:number) => {
-            set((state) => ({response: state.response.map(data => data.id === id ? {...data, upvoteCount: data.upvoteCount + 1} : data)}));
-            
-            const upvote = get().response.find(data => data.id === id)
-            await fetch(`https://bytegrad.com/course-assets/projects/corpcomment/api/feedbacks/` + id, {
-                method: 'PUT',
-                body: JSON.stringify(upvote),
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json'
-                }
-            })
-            console.log(upvote)
+        AddUpvote : async (id:number) =>set((state) => ({response: state.response.map(data => data.id === id ? {...data, upvoteCount: data.upvoteCount + 1} : data)})),
+        companyCollector: () => set((state) => ({CompanyListView: state.response.map(data => data.company).filter((data, index, array) => array.indexOf(data) === index)})),
+        hashtagFilter: (word:string) => {
+            word && set((state) => ({filteredResponse: state.response.filter(data => data.company === word)}))
         },
-        hashtags: (word:string) =>  
-            set((state) => ({response: state.response.filter(data => data.company === word && data )}))
     }
 })
